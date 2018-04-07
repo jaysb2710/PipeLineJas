@@ -1,0 +1,27 @@
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                 echo 'Build is completed'
+            }
+        }
+        stage('Test') {
+            steps {
+                 echo 'Test is completed'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                 echo 'Deploy is completed'
+            }
+        }
+    }
+    post { 
+        //always，unstable，success，failure, changed
+        success { 
+            echo 'Build successful' 
+            //build job: '/Platform DXC/OOSS_CaC', propagate: false, quietPeriod: 10, wait: false
+        }
+    }
+}

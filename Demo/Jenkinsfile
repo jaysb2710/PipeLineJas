@@ -1,0 +1,17 @@
+node {  
+    stage('Build') { 
+        // TODO: Build
+        echo 'build is completed'
+    }
+    stage('Test') { 
+        // TODO: Build
+        echo 'Test is completed'
+    }
+    stage('Deploy') { 
+        // TODO: Build
+        echo 'Deploy is completed'
+    }
+     stage('OOSS') { 
+        build job: '/Platform DXC/OOSS_CaC', propagate: false, quietPeriod: 10, wait: false
+    }
+}

@@ -1,0 +1,34 @@
+#!/usr/bin/env groovy
+import hudson.model.*
+
+class CaC {
+   private String name = "Joe";
+	
+   public String getName() {
+      return this.name;
+   } 
+}
+
+String getName(){
+    return "abcd";
+}
+
+
+node {
+	stage('Stage 1'){
+		echo "BUILD_URL=${env.BUILD_URL}"
+		def buildResult=manager.getResult()
+        def jobName=manager.getEnvVariable("JOB_NAME")
+        println buildResult+jobName
+		def workspace = pwd()
+		def cac = new CaC()
+		def name = getName()
+		println name
+		echo "workspace="
+		//println "cac"
+		//println cac.getName()
+	}
+	stage('Stage 2'){
+		echo "stage 2"
+	}
+}

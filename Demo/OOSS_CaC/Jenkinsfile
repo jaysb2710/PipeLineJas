@@ -1,0 +1,42 @@
+import groovy.json.JsonOutput
+
+// Send notofication message to slack or output
+def notifySlack(text) {
+    def slackURL = 'https://hooks.slack.com/services/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'
+    def payload = JsonOutput.toJson([text      : text,
+                                     username  : "Jenkins",
+                                     icon_emoji: ":jenkins:"])
+    sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
+}
+
+node {
+    stage('Operate') {
+        echo "OOSS_CICD_Pipeline"
+        echo "OOSS_Healthcheck"
+        echo "OOSS_Logging"
+        echo "OOSS_Common_Event_Handling"   
+        echo "Operate Check is finished"
+    }
+    stage('Optimize') {
+        def causes = currentBuild.rawBuild.getCauses() 
+        println causes
+        def buildResult=manager.getResult()
+        def jobName=manager.getEnvVariable("JOB_NAME")
+        println buildResult+jobName
+        echo "Optimize Check is finished"
+    }
+    stage('Secure') {
+        def lastBuild = currentBuild.rawBuild.getPreviousBuild()
+        if( lastBuild ){
+            println "the previous build is ${lastBuild.getId()} "
+        }
+        echo "Secure Check is finished"
+    }
+    stage('Scale') {
+        echo "Scale Check is finished"
+    }
+    stage('Summary') {
+        notifySlack "OOSS pipeline is triggered by xxxx \n xx/xx OOSS Standars are passed"
+        echo "Summary is finished"
+    }
+}
